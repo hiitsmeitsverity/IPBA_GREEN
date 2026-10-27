@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evergreen Archive | Team GREEN</title>
+<style>
+:root {
+  --forest: #234b36;
+  --green: #416b4d;
+  --sage: #dce8d6;
+  --pale: #f3f5ec;
+  --paper: #fffdf7;
+  --ink: #293d30;
+  --muted: #718174;
+  --line: #d9e2d3;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--pale); color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif; line-height: 1.6;
+}
+header {
+  padding: 34px 20px 28px; text-align: center;
+  background: var(--forest); color: var(--paper);
+}
+.eyebrow { text-transform: uppercase; letter-spacing: 3px; font-size: 11px; color: #d0e0ca; }
+header h1 { font-family: Georgia, serif; font-size: clamp(30px, 5vw, 43px); margin: 8px 0; }
+header p { margin: 0; color: #e1eadc; }
+nav {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  padding: 14px; background: #e4ecdf; border-bottom: 1px solid var(--line);
+}
+nav button {
+  border: 1px solid transparent; background: transparent; color: var(--forest);
+  padding: 9px 13px; border-radius: 24px; cursor: pointer; font-weight: 600;
+}
+nav button:hover, nav button.active { background: var(--paper); border-color: #c9d9c4; }
+main { width: min(920px, calc(100% - 32px)); margin: 30px auto 50px; }
+.welcome { text-align: center; margin: 0 auto 24px; max-width: 680px; }
+.welcome h2 { font: 28px Georgia, serif; margin: 0 0 8px; color: var(--forest); }
+.welcome p { color: var(--muted); margin: 0; }
+.search-wrap { margin: 22px 0 16px; }
+input[type="search"] {
+  width: 100%; border: 1px solid #cbd9c6; border-radius: 12px;
+  background: var(--paper); padding: 15px 16px; font-size: 15px; color: var(--ink);
+}
+input:focus { outline: 2px solid #9bb995; }
+.results-line { color: var(--muted); font-size: 13px; margin: 0 0 13px 3px; }
+.card, .detail, .empty {
+  background: var(--paper); border: 1px solid var(--line); border-radius: 15px;
+  padding: 22px; margin: 14px 0; box-shadow: 0 4px 14px #233d2b0a;
+}
+.card { cursor: pointer; transition: transform .18s, box-shadow .18s; }
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 18px #233d2b12; }
+.card h3, .detail h2 { font-family: Georgia, serif; color: var(--forest); margin: 0 0 8px; }
+.card p { margin: 0 0 12px; color: #596c5d; }
+.tag {
+  display: inline-block; border: 1px solid #d7e4d1; background: #edf3e8;
+  color: #426449; border-radius: 22px; padding: 4px 10px; font-size: 12px;
+  margin: 3px 4px 3px 0; cursor: pointer;
+}
+.tag:hover { background: var(--sage); }
+.section-title { color: var(--green); font: 20px Georgia, serif; margin: 25px 0 8px; }
+.field { padding: 14px 0; border-bottom: 1px solid #e8ede3; }
+.field:last-child { border-bottom: 0; }
+.field strong { display: block; color: #66816a; text-transform: uppercase; letter-spacing: 1px; font-size: 11px; margin-bottom: 5px; }
+.field p { margin: 0; white-space: pre-line; }
+.back {
+  border: 0; border-radius: 8px; padding: 10px 14px; background: var(--sage);
+  color: var(--forest); font-weight: 600; cursor: pointer; margin-top: 14px;
+}
+.back:hover { background: #cfdfc8; }
+.empty { text-align: center; color: var(--muted); }
+footer { text-align: center; padding: 25px 15px; background: #e7eee1; color: #718174; font-size: 12px; }
+@media (max-width: 540px) {
+  header { padding: 28px 16px; }
+  .card, .detail, .empty { padding: 17px; }
+  nav { gap: 4px; }
+  nav button { padding: 8px 10px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Team GREEN · Lifelabs</div>
+  <h1>Team Green 🌿</h1>
+  <p>·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·⋆⊱༻𖥸༺⊰⋆·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·</p>
+</header>
+
+<nav aria-label="Archive sections">
+  <button class="active" data-view="all">Home / Archive</button>
+  <button data-view="problems">Focus Problem</button>
+  <button data-view="categories">YouTube Categories</button>
+  <button data-view="audience">Target Audience</button>
+  <button data-view="contentType">Content Type</button>
+  <button data-view="needAddressed">Need Addressed</button>
+  <button data-view="ideas">Initial Project Ideas</button>
+</nav>
+
+<main>
+  <section class="welcome">
+    <h2 id="pageTitle">Explore the Archive</h2>
+    <p id="pageDescription">select a card or search any topic to read more :3</p>
+  </section>
+  <div class="search-wrap">
+    <input id="search" type="search" placeholder="Search fish health, aquaculture, water quality..." aria-label="Search archive">
+  </div>
+  <p class="results-line" id="resultsLine"></p>
+  <section id="results" aria-live="polite"></section>
+  <section id="detailView" hidden></section>
+</main>
+
+<footer>Made with care by Team GREEN 🍃</footer>
+
+<script>
+const record = {
+  title: "Fish Health Management and Disease Prevention (AFA)",
+  problem: "Fish Health Management and Disease Prevention (AFA)",
+  problemStatement: "The demand for fish and fish products has significantly increased due to the world's expanding population, which has also increased competition for the water, land, and other natural resources required for aquaculture development. The intensification of aquaculture will necessitate the use of more inputs, particularly feed per unit area of land, which will increase the amount of waste produced by the production systems.",
+  importance: "Fish health management and disease prevention are important because it helps to forestall fatal disease outbreaks, protects farm profits, and ensures safe seafood for consumers.",
+  affected: "The farmed fish, the aquaculture operators, wild fish populations, and consumers.",
+  causes: "Poor water quality, inadequate nutrition, poor sanitation, and environmental issues.",
+  categories: ["Fish Farming / Aquaculture"],
+  chosenCategory: "Fish Farming / Aquaculture",
+  contentType: "In this content type, we discuss on how prevention is cheaper and more wiser than only a crisis cure, reframing fish health not as treating sick animals, but as managing water, nutrition, and daily habits. And as a unique spin to our video, we will use either of the following; a drawn person to guide you through the video, the perspectives of the affected people whom are often overlooked, and including some fun facts that'll actually be useful to daily life (e.g., doing simple things that'll actually help the fish who are affected.)",
+  age: "18–50 years old",
+  interests: "Fish farming, aquaculture, fish health, and disease prevention.",
+  needs: "Fish diseases, poor water quality, and difficulty preventing fish deaths.",
+  needAddressed: "Our content type aims to address the need for practical, clear, and easy-to-understand information about fish health management and disease prevention. It will help fish farmers recognize early signs of fish diseases, such as unusual swimming behavior, loss of appetite, visible wounds, and unexpected fish deaths. The video will also explain the importance of maintaining good water quality, proper feeding, regular pond cleaning, and good sanitation to keep fish healthy and reduce the risk of disease outbreaks. Additionally, this kind of content will provide simple and practical tips that fish farmers can apply in their daily activities to prevent the spread of diseases and minimize fish mortality. It will emphasize the importance of identifying problems early and seeking advice from aquaculture experts when necessary. Through visual demonstrations and straightforward explanations, the video hopes to help fish farmers improve fish survival, avoid unnecessary financial losses, increase productivity, and maintain healthier and more sustainable aquaculture systems.",
+  ideas: [
+    "This video explores why preventative care is significantly more cost-effective than reactive crisis management in aquaculture. We reframe fish health away from treating diseased livestock and toward the proactive stewardship of their ecosystem. Learn how optimizing water quality, nutritional strategies, and daily husbandry habits mitigates disease risk and ensures operational success.",
+    "From our own perspective, we believe that this content is relevant so that everybody, even the people outside our target audience, are aware of the severity of fish health management, as it protects the global food supply of humans, safeguards public health, and supports economic stability."
+  ],
+  background: "Fish farmers, aquaculture workers, students, or small-scale fish pond owners.",
+  connection: "This audience is directly connected to the problem because fish farmers, aquaculture workers, students, and pond owners deal with fish health, water quality, and fish diseases. They need practical information to prevent diseases and reduce fish deaths.",
+  whyAudience: "They are the best target audience because they are interested in fish farming and need useful information about fish health and disease prevention. Our content can provide simple and practical tips that they can apply in their fish farming activities.",
+  otherProblems: [
+    "Software Issues and System Maintenance",
+    "Fish Health Management and Disease Prevention",
+    "Safety Practices in Kitchen and Garment Work Areas"
+  ]
+};
+
+const views = {
+  all: { title: "Explore the Archive", description: "select a card or search any topic to read more :3" },
+  problems: { title: "Focus Problem", description: "·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·⋆⊱༻𖥸༺⊰⋆·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·" },
+  categories: { title: "YouTube Content Category", description: "·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·⋆⊱༻𖥸༺⊰⋆·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·" },
+  audience: { title: "Target Audience", description: "·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·⋆⊱༻𖥸༺⊰⋆·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·" },
+  contentType: { title: "Content Type", description: "·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·⋆⊱༻𖥸༺⊰⋆·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·" },
+  needAddressed: { title: "Need Addressed", description: "·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·⋆⊱༻𖥸༺⊰⋆·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·" },
+  ideas: { title: "Initial Project Ideas or Content", description: "·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·⋆⊱༻𖥸༺⊰⋆·༻𐫱༺··༻𐫱༺··༻𐫱༺··༻𐫱༺·" }
+};
+let currentView = "all";
+
+const results = document.getElementById("results");
+const detailView = document.getElementById("detailView");
+const search = document.getElementById("search");
+
+function makeTag(text, view) {
+  const tag = document.createElement("button");
+  tag.className = "tag";
+  tag.textContent = text;
+  tag.onclick = (event) => {
+    event.stopPropagation();
+    if (view) setView(view);
+    search.value = text;
+    render();
+  };
+  return tag;
+}
+
+function card(title, description, tags, action) {
+  const el = document.createElement("article");
+  el.className = "card";
+  el.tabIndex = 0;
+  el.setAttribute("role", "button");
+  el.onclick = action;
+  el.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); action(); } };
+  const h = document.createElement("h3"); h.textContent = title;
+  const p = document.createElement("p"); p.textContent = description;
+  el.append(h, p);
+  tags.forEach(t => el.appendChild(makeTag(t.text, t.view)));
+  return el;
+}
+
+function openDetail(title, fields) {
+  document.getElementById("pageTitle").textContent = title;
+  document.getElementById("pageDescription").textContent = "Worksheet answers from Team GREEN.";
+  results.hidden = true;
+  search.parentElement.hidden = true;
+  document.getElementById("resultsLine").hidden = true;
+  detailView.hidden = false;
+  detailView.innerHTML = "";
+  const panel = document.createElement("article"); panel.className = "detail";
+  const h = document.createElement("h2"); h.textContent = title; panel.appendChild(h);
+  fields.forEach(([label, value]) => {
+    const div = document.createElement("div"); div.className = "field";
+    const strong = document.createElement("strong"); strong.textContent = label;
+    const p = document.createElement("p"); p.textContent = value;
+    div.append(strong, p); panel.appendChild(div);
+  });
+  const back = document.createElement("button"); back.className = "back"; back.textContent = "← Back to archive";
+  back.onclick = () => { detailView.hidden = true; results.hidden = false; search.parentElement.hidden = false; document.getElementById("resultsLine").hidden = false; render(); };
+  panel.appendChild(back); detailView.appendChild(panel);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openFocus() {
+  openDetail(record.problem, [
+    ["Problem Statement", record.problemStatement],
+    ["Why Is It Important?", record.importance],
+    ["Who Is Affected?", record.affected],
+    ["Possible Causes", record.causes],
+    ["Other Problems Considered", record.otherProblems.join("\\n")]
+  ]);
+}
+
+function openAudience() {
+  openDetail("Target Audience: Fish Farming / Aquaculture", [
+    ["Chosen Problem", record.problem],
+    ["Chosen YouTube Category", record.chosenCategory],
+    ["Age Group", record.age],
+    ["Interests", record.interests],
+    ["Needs or Problems They Experience", record.needs],
+    ["Possible Background", record.background],
+    ["How This Audience Connects to the Problem", record.connection],
+    ["Why They Are the Best Target Audience", record.whyAudience]
+  ]);
+}
+
+function openCategory(category) {
+  openDetail(category, [
+    ["Chosen Problem", record.problem],
+    ["YouTube Content Category", category],
+    ["Audience Profile", `${record.age}. ${record.background}`],
+    ["Related Interests", record.interests],
+    ["Needs or Problems", record.needs]
+  ]);
+}
+
+function openProjectSection(title, label, value) {
+  openDetail(title, [
+    ["Chosen Problem", record.problem],
+    [label, value]
+  ]);
+}
+
+function setView(view) {
+  currentView = view;
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("active", b.dataset.view === view));
+  document.getElementById("pageTitle").textContent = views[view].title;
+  document.getElementById("pageDescription").textContent = views[view].description;
+  detailView.hidden = true; results.hidden = false; search.parentElement.hidden = false;
+  document.getElementById("resultsLine").hidden = false;
+  search.value = "";
+  render();
+}
+
+function render() {
+  if (detailView.hidden === false) return;
+  results.innerHTML = "";
+  const q = search.value.trim().toLowerCase();
+  let items = [];
+
+  if (currentView === "all" || currentView === "problems") {
+    items.push({
+      title: "Chosen Focus Problem",
+      desc: record.problem,
+      search: [record.problem, record.problemStatement, record.importance, record.affected, record.causes, ...record.otherProblems].join(" "),
+      tags: [{text:"Fish Health Management", view:"problems"}, {text:"Disease Prevention", view:"problems"}],
+      action: openFocus
+    });
+  }
+
+  if (currentView === "all" || currentView === "categories") {
+    record.categories.forEach(category => items.push({
+      title: category,
+      desc: "YouTube content category connected to fish health and disease prevention.",
+      search: [category, record.problem, record.interests, record.needs].join(" "),
+      tags: [{text: "YouTube Category", view:"categories"}, {text: "Fish Health", view:"problems"}],
+      action: () => openCategory(category)
+    }));
+  }
+
+  if (currentView === "all" || currentView === "audience") {
+    items.push({
+      title: "Target Audience Profile",
+      desc: `${record.age} · ${record.background}`,
+      search: [record.age, record.interests, record.needs, record.background, record.connection, record.whyAudience, record.chosenCategory].join(" "),
+      tags: [{text:"Target Audience", view:"audience"}, {text:record.chosenCategory, view:"categories"}],
+      action: openAudience
+    });
+  }
+
+  const projectSections = [
+    {
+      view: "contentType",
+      title: "Content Type",
+      description: record.contentType,
+      search: record.contentType,
+      label: "Content Type",
+      value: record.contentType
+    },
+    {
+      view: "needAddressed",
+      title: "Need Addressed",
+      description: record.needAddressed,
+      search: record.needAddressed,
+      label: "Need Addressed",
+      value: record.needAddressed
+    },
+    {
+      view: "ideas",
+      title: "Initial Project Ideas or Content",
+      description: record.ideas.join(" "),
+      search: record.ideas.join(" "),
+      label: "Initial Project Ideas or Content",
+      value: record.ideas.join("\n")
+    }
+  ];
+
+  projectSections.forEach(section => {
+    if (currentView === "all" || currentView === section.view) {
+      items.push({
+        title: section.title,
+        desc: section.description,
+        search: [section.search, record.problem].join(" "),
+        tags: [{text: section.title, view: section.view}],
+        action: () => openProjectSection(section.title, section.label, section.value)
+      });
+    }
+  });
+
+  items = items.filter(item => item.search.toLowerCase().includes(q));
+  document.getElementById("resultsLine").textContent = `${items.length} ${items.length === 1 ? "result" : "results"}`;
+
+  if (!items.length) {
+    const empty = document.createElement("div"); empty.className = "empty";
+    empty.innerHTML = "<h3>No matching answers found 🌱</h3><p>Try another keyword or choose a section above.</p>";
+    results.appendChild(empty);
+    return;
+  }
+  items.forEach(item => results.appendChild(card(item.title, item.desc, item.tags, item.action)));
+}
+
+document.querySelectorAll("nav button").forEach(button => {
+  button.addEventListener("click", () => setView(button.dataset.view));
+});
+search.addEventListener("input", render);
+render();
+</script>
+</body>
+</html>
